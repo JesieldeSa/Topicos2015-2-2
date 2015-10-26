@@ -48,11 +48,11 @@ public class Passaro {
      * Atualiza o comportamento do Passaro
      */
     public void atualizar(float delta){
-       //atualizarVelocidade();
+        atualizarVelocidade();
     }
 
     private void atualizarVelocidade() {
-        corpo.setLinearVelocity(2f, corpo.getLinearVelocity().x);
+        corpo.setLinearVelocity(2f, corpo.getLinearVelocity().y);
     }
 
     /**
