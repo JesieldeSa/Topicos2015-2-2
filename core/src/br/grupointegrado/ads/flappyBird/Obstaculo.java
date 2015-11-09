@@ -57,12 +57,14 @@ public class Obstaculo {
         largura = 40 / Util.PIXEL_METRO;
         altura = camera.viewportHeight / Util.PIXEL_METRO;
 
-        float xInicial = largura;
+        float xInicial = largura + (camera.viewportWidth / 2 / Util.PIXEL_METRO);
         if(ultimoObstaculo != null)
               xInicial = ultimoObstaculo.getPosX();
-        posX = xInicial + 8;  // é o espaço entre os obstaculos
 
-        float parcela = (altura - Util.ALTURA_CHAO) / 6; // tamanho da tela / 6 para encontrar a posição y dos obstáculos.
+        posX = xInicial + 4;  //  4 é o espaço entre os obstaculos
+
+        // tamanho da tela / 6 para encontrar a posição y dos obstáculos.
+        float parcela = (altura - Util.ALTURA_CHAO) / 6;
 
         int multiplicador = MathUtils.random(1 ,3); //número aleatório entre 1 e 3.
 
@@ -71,14 +73,40 @@ public class Obstaculo {
         posYCima = posYBaixo + altura + 2f; // 2f espaço entre os cnaos.
     }
 
-
-        public float getPosX(){
-            return this.posX;
-    }
-
     public void remover(){
         mundo.destroyBody(corpoCima);
         mundo.destroyBody(corpoBaixo);
     }
 
+        public float getPosX(){
+            return this.posX;
+    }
+
+    public void setPosX(float posX) {
+        this.posX = posX;
+    }
+
+    public float getLargura() {
+        return largura;
+    }
+
+    public void setLargura(float largura) {
+        this.largura = largura;
+    }
+
+    public float getAltura() {
+        return altura;
+    }
+
+    public void setAltura(float altura) {
+        this.altura = altura;
+    }
+
+    public boolean isPassou() {
+        return passou;
+    }
+
+    public void setPassou(boolean passou) {
+        this.passou = passou;
+    }
 }
