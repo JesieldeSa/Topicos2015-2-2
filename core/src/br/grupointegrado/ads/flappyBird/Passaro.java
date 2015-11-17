@@ -3,6 +3,7 @@ package br.grupointegrado.ads.flappyBird;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -10,19 +11,17 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-/**
- * Created by Jesi on 05/10/2015.
- */
+
 public class Passaro {
-    private OrthographicCamera camera;  // camera do jogo
+
+    private final World mundo;
+    private final OrthographicCamera camera;
     private final Texture[] texturas;
-    private World mundo;    // representa o mundo do Box2D
-    private Body corpo;  // corpo do chao
-
-
+    private Body corpo;
 
     public Passaro(World mundo, OrthographicCamera camera, Texture[] texturas){
-      this.mundo = mundo;
+
+        this.mundo = mundo;
         this.camera = camera;
         this.texturas = texturas;
 
@@ -45,10 +44,32 @@ public class Passaro {
     }
 
     /**
-     * Atualiza o comportamento do Passaro
+     * Atualiza o comportamento do passaro
+     * @param delta
      */
-    public void atualizar(float delta){
-        atualizarVelocidade();
+
+    public void atualizar(float delta, boolean movimentar){
+        if (movimentar) {
+            atualizarVelocidade();
+            atualizarRotacao();
+        }
+    }
+
+    private void atualizarRotacao() {
+        float velocidadeY = corpo.getLinearVelocity().y;
+        float rotacao = 0;
+        if (velocidadeY < 0) {
+            // caindo
+            rotacao = -15;
+        } else if (velocidadeY > 0) {
+            // subindo
+            rotacao = 10;
+        }  else {
+            // reto
+            rotacao = 0;
+        }
+        rotacao = (float) Math.toRadians(rotacao); // convertendo graus para radiano
+        corpo.setTransform(corpo.getPosition(), rotacao);
     }
 
     private void atualizarVelocidade() {
@@ -58,12 +79,13 @@ public class Passaro {
     /**
      * Aplica uma força positiva no Y para simular o Pulo
      */
-    public void pular(){
+
+    public void pular() {
         corpo.setLinearVelocity(corpo.getLinearVelocity().x, 0);
-        corpo.applyForceToCenter(0, 100, false);
+        corpo.applyForceToCenter(0, 110, false);
     }
 
-    public Body getCorpo(){
+    public Body getCorpo() {
         return corpo;
     }
 }
